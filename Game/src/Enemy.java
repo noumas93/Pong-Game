@@ -1,10 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-/**
- * @author mohma171
- * Klassen Enemy representerar fiendestöten som kombineras med bollens position samt hastighet.
- */
 public class Enemy {
 
 	private int y;
@@ -41,7 +37,6 @@ public class Enemy {
 		return this.y;
 	}
 
-	// s�tta hur enemyn beeter sig med hj�lp av bollen y-kord
 	public void update(int ballY) {
 		int ballMid = ballY + 10;
 		int enemyMid = this.y + 50;

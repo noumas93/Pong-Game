@@ -3,10 +3,6 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
 
-/**
- * @author mohma171 Klassen Board funkar som en dynamisk panel. Då den sköter
- *         switchen mellan MenuPanel och GamePanel.
- */
 public final class Board extends JFrame {
 
 	public Board() {}
