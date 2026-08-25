@@ -1,40 +1,18 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import javax.swing.JPanel;
 
-
-/**
- * @author mohma171
- * Klassen Player skapar sjävla spelaren som man styr.
- */
-public class Player extends JPanel {
+public class Player {
 
 	private int y;
-	private int x;
-	private int weight;
-	private int height;
-
-	public int getWeight() {
-		return weight;
-	}
-
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
+	private final int x;
+	private final int weight;
+	private final int height;
 
 	public Player() {
 		y = 0;
-		x = 5;
-		setHeight(100);
-		setWeight(20);
+		x = GameConfig.PLAYER_X;
+		height = GameConfig.PADDLE_HEIGHT;
+		weight = GameConfig.PADDLE_WIDTH;
 	}
 
 	public int gety() {
@@ -42,6 +20,10 @@ public class Player extends JPanel {
 	}
 
 	public void setY(int y) {
+		if (y < 0)
+			y = 0;
+		else if (y > GameConfig.FIELD_HEIGHT - height)
+			y = GameConfig.FIELD_HEIGHT - height;
 		this.y = y;
 	}
 

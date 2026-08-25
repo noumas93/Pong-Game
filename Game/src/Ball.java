@@ -1,18 +1,19 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import javax.swing.JPanel;
 
 /**
  * @author mohma171
- * Den här klassen ritar bollen i spelet, hanterar bollens hastighet samt kollisionen. 
+ * Den här klassen representerar bollen i spelet, hanterar hastighet samt kollisionen.
  */
-public class Ball extends JPanel {
+public class Ball {
+
+	public static final int MAX_SPEED = 14;
 
 	private int x;
 	private int y;
 	private int vinx;
 	private int viny;
-	private int size;
+	private final int size;
 
 	public int gety() {
 		return this.y;
@@ -22,9 +23,9 @@ public class Ball extends JPanel {
 
 		x = 50;
 		y = 50;
-		vinx = 6;
-		viny = 6;
-		size = 20;
+		vinx = GameConfig.BALL_START_SPEED;
+		viny = GameConfig.BALL_START_SPEED;
+		size = GameConfig.BALL_SIZE;
 	}
 
 	public int getVinx() {
@@ -49,8 +50,8 @@ public class Ball extends JPanel {
 		this.x += vinx;
 
 		// bollen går neråt
-		if (this.y + 60 > 600) {
-			this.y = 600 - 60;
+		if (this.y + size > GameConfig.FIELD_HEIGHT) {
+			this.y = GameConfig.FIELD_HEIGHT - size;
 			this.viny = -viny;
 		}
 		// bollen går upåt
@@ -61,7 +62,7 @@ public class Ball extends JPanel {
 
 		// detektera spelarn
 		if (this.x < 35) {
-			if (this.y < playerY + 80 && this.y + 20 > playerY) {
+			if (this.y < playerY + GameConfig.PADDLE_HEIGHT && this.y + size > playerY) {
 				this.x = 35;
 				this.vinx = -vinx;
 			} else {
@@ -70,8 +71,8 @@ public class Ball extends JPanel {
 		}
 
 		// detektera fienden
-		if (this.x + 20 > 770) {
-			if (this.y < enemyY + 100 && this.y + 20 > enemyY) {
+		if (this.x + size > 770) {
+			if (this.y < enemyY + GameConfig.PADDLE_HEIGHT && this.y + size > enemyY) {
 				this.x = 750;
 				this.vinx = -vinx;
 			} else {
@@ -81,10 +82,11 @@ public class Ball extends JPanel {
 		if (isHard) {
 			int ymid = this.y + 10;
 			int xmid = this.x + 10;
-			int yboxmid1 = 125;
-			int xboxmid = 375;
-			int yboxmid2 = 425;
-			if (intersect(this.x, this.y, 20, 20, 350, 100, 50, 50)) {
+			int yboxmid1 = GameConfig.OBSTACLE_TOP_Y + GameConfig.OBSTACLE_SIZE / 2;
+			int xboxmid = GameConfig.OBSTACLE_X + GameConfig.OBSTACLE_SIZE / 2;
+			int yboxmid2 = GameConfig.OBSTACLE_BOTTOM_Y + GameConfig.OBSTACLE_SIZE / 2;
+			if (intersect(this.x, this.y, size, size, GameConfig.OBSTACLE_X, GameConfig.OBSTACLE_TOP_Y,
+					GameConfig.OBSTACLE_SIZE, GameConfig.OBSTACLE_SIZE)) {
 				if ((Math.abs(xmid - xboxmid) < Math.abs(ymid - yboxmid1)) && (
 						(ymid < yboxmid1 && viny > 0) || (ymid > yboxmid1 && viny < 0)
 						))
@@ -107,7 +109,8 @@ public class Ball extends JPanel {
 					}
 				}
 			}
-			if (intersect(this.x, this.y, 20, 20, 350, 400, 50, 50)) {
+			if (intersect(this.x, this.y, size, size, GameConfig.OBSTACLE_X, GameConfig.OBSTACLE_BOTTOM_Y,
+					GameConfig.OBSTACLE_SIZE, GameConfig.OBSTACLE_SIZE)) {
 				if ((Math.abs(xmid - xboxmid) < Math.abs(ymid - yboxmid2)) && (
 						(ymid < yboxmid2 && viny > 0) || (ymid > yboxmid2 && viny < 0)
 						))

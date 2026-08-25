@@ -12,12 +12,29 @@ import java.io.IOException;
  */
 public class Highscore {
 	private int hs;
-	private String path = "/home/mohma171/TDDE10/highscore.txt";
+	private final String path;
 	private int Score;
 
-	public Highscore() {
 
+	public Highscore() {
+		// Use a portable path (Windows/Linux) and create the file if missing.
+		String home = System.getProperty("user.home");
+		String fileName = "highscore.txt";
+		this.path = home + File.separator + fileName;
+		File file = new File(path);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+				// initialize with 0
+				try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
+					dos.writeInt(0);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+
 
 	public void setScore(int score) {
 		Score = score;
@@ -39,30 +56,17 @@ public class Highscore {
 
 	}
 
-	int getScore() {
-
+	public int getScore() {
 		File file = new File(path);
-		FileInputStream fis = null;
-		DataInputStream dos = null;
-
-		try {
-			fis = new FileInputStream(file);
-			dos = new DataInputStream(fis);
-
-			Score = dos.readInt();
-
+		try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+			Score = dis.readInt();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (fis != null)
-					fis.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			// If reading fails, treat as 0.
+			Score = 0;
 		}
 		return Score;
 	}
+
 
 	public void setHs(int localHs) {
 		hs = localHs;

@@ -1,35 +1,30 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
-
-
-
 /**
  * @author mohma171
- * Klassen Enemy ritar fiendestöten som kombineras med bollens position samt hastighet.
+ * Klassen Enemy representerar fiendestöten som kombineras med bollens position samt hastighet.
  */
-public class Enemy extends JPanel {
-	private Ball ball;
+public class Enemy {
+
 	private int y;
-	private int x;
+	private final int x;
 	private int enemySpeed;
-	private int weight;
-	private int height;
+	private final int weight;
+	private final int height;
 
 	public Enemy() {
-		ball = new Ball();
 		y = 0;
-		x = 760;
-		enemySpeed = 4;
-		setHeight(100);
-		setWeight(20);
+		x = GameConfig.ENEMY_X;
+		enemySpeed = GameConfig.ENEMY_SPEED_NORMAL;
+		height = GameConfig.PADDLE_HEIGHT;
+		weight = GameConfig.PADDLE_WIDTH;
 	}
 
 	public void hardspeed(boolean hard) {
 
 		if (hard) {
-			enemySpeed = 5;
+			enemySpeed = GameConfig.ENEMY_SPEED_HARD;
 		}
 
 	}
@@ -55,6 +50,11 @@ public class Enemy extends JPanel {
 			this.y -= enemySpeed;
 		else if (ballMid > enemyMid)
 			this.y += enemySpeed;
+
+		if (this.y < 0)
+			this.y = 0;
+		else if (this.y > GameConfig.FIELD_HEIGHT - height)
+			this.y = GameConfig.FIELD_HEIGHT - height;
 	}
 
 	public void draw(Graphics g) {
@@ -66,15 +66,7 @@ public class Enemy extends JPanel {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
 	public int getHeight() {
 		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 }
