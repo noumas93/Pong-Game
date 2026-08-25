@@ -1,10 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-/**
- * @author mohma171
- * Den här klassen representerar bollen i spelet, hanterar hastighet samt kollisionen.
- */
 public class Ball {
 
 	public static final int MAX_SPEED = 14;
@@ -44,23 +40,19 @@ public class Ball {
 		this.viny = viny;
 	}
 
-	// kollision
 	public int update(int playerY, int enemyY, boolean isHard) {
 		this.y += viny;
 		this.x += vinx;
 
-		// bollen går neråt
 		if (this.y + size > GameConfig.FIELD_HEIGHT) {
 			this.y = GameConfig.FIELD_HEIGHT - size;
 			this.viny = -viny;
 		}
-		// bollen går upåt
 		else if (this.y < 0) {
 			this.y = 0;
 			this.viny = -viny;
 		}
 
-		// detektera spelarn
 		if (this.x < 35) {
 			if (this.y < playerY + GameConfig.PADDLE_HEIGHT && this.y + size > playerY) {
 				this.x = 35;
@@ -70,7 +62,6 @@ public class Ball {
 			}
 		}
 
-		// detektera fienden
 		if (this.x + size > 770) {
 			if (this.y < enemyY + GameConfig.PADDLE_HEIGHT && this.y + size > enemyY) {
 				this.x = 750;
